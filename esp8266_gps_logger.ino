@@ -426,8 +426,10 @@ void loop() {
     } 
   }
 
+  bool gpsDateUpdated = gps.date.isUpdated();
+  bool gpsTimeUpdated = gps.time.isUpdated();
   // Set time only once when GPS date and time are valid
-  if (!localTimeSet && gps.date.isValid() && gps.time.isValid() && gps.date.isUpdated() &&  gps.time.isUpdated() ) {
+  if (!localTimeSet && gpsDateUpdated && gpsTimeUpdated && gps.date.isValid() && gps.time.isValid()) {
     time_t t = getGPSTime();
     if (t > 100000) {
       struct timeval now = { t, 0 };
@@ -453,7 +455,7 @@ void loop() {
       display.println("N/A");
     }
 
-    if (gps.date.isUpdated() && gps.time.isUpdated()) {
+    if (gpsDateUpdated && gpsTimeUpdated) {
       display.print(gps.date.year());
       display.print('/');
       if (gps.date.month() < 10) display.print('0');
